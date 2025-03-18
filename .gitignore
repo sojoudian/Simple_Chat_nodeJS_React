@@ -1,0 +1,57 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log
+package-lock.json
+yarn.lock
+.env
+.env.local
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Binaries
+dist/
+build/
+.babelrc
+.next/
+.vercel/
+.out/
+
+# Editor & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# React specific
+*.cache/
+public/
+build/
+.eslintcache
+
+# Test coverage
+coverage/
+jest.config.js
+jest.setup.js
+.nyc_output/
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Misc
+*.bak
+*.zip
+*.tar
+*.tgz
+
