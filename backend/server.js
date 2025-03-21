@@ -12,7 +12,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-
+// Create HTTP server first
+const server = http.createServer(app);
 
 // Middleware
 app.use(cors({
@@ -22,7 +23,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-// Socket.io CORS config
+// Socket.io CORS config - Now server is defined before using it
 const io = socketIo(server, {
   cors: {
     origin: true, // Allow any origin
@@ -180,8 +181,6 @@ app.get('/api/users', authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
-
 
 // Socket.io connection
 io.on('connection', (socket) => {
