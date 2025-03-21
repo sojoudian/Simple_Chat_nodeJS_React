@@ -179,8 +179,7 @@ app.get('/api/users', authenticateToken, async (req, res) => {
   }
 });
 
-// Handle preflight requests
-app.options('*', cors());
+
 
 // Socket.io connection
 io.on('connection', (socket) => {
