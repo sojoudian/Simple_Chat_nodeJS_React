@@ -35,7 +35,6 @@ Thumbs.db
 
 # React specific
 *.cache/
-public/
 build/
 .eslintcache
 
