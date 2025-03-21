@@ -15,7 +15,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:3000', // Allow only the frontend URL
+    origin: ['http://localhost:3000', 'http://10.0.0.192:3000'], // Allow both localhost and your network IP
     methods: ['GET', 'POST', 'OPTIONS'], // Added OPTIONS for preflight
     credentials: true // Allow credentials (cookies, authorization headers)
   }
@@ -23,7 +23,7 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow frontend access
+  origin: ['http://localhost:3000', 'http://10.0.0.192:3000'], // Allow both localhost and your network IP
   credentials: true, // Allow cookies and authentication headers
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Added OPTIONS for preflight
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -242,8 +242,8 @@ io.on('connection', (socket) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 5001; // Changed default from 5000 to 5001
-server.listen(PORT, () => {
+const PORT = process.env.PORT || 5001; 
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
 

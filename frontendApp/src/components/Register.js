@@ -21,9 +21,10 @@ function Register({ setIsAuthenticated }) {
     
     setLoading(true);
     
+    const API_URL = process.env.REACT_APP_API_URL || "http://10.0.0.192:5001";
     try {
       const response = await axios.post(
-        'http://localhost:5001/api/register',
+        `${API_URL}/api/register`,
         { username, password },
         { withCredentials: true } // Ensure CORS requests work properly
       );

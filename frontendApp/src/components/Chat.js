@@ -13,7 +13,7 @@ function Chat() {
   const messagesEndRef = useRef(null);
   const selectedUserRef = useRef(null); // Add ref to track current selected user
   const currentUser = localStorage.getItem('username');
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+  const API_URL = process.env.REACT_APP_API_URL || "http://10.0.0.192:5001";
   
   // Update selectedUserRef whenever selectedUser changes
   useEffect(() => {
