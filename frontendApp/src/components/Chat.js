@@ -11,8 +11,14 @@ function Chat() {
   const [socketConnected, setSocketConnected] = useState(false);
   const socket = useRef(null);
   const messagesEndRef = useRef(null);
+  const selectedUserRef = useRef(null); // Add ref to track current selected user
   const currentUser = localStorage.getItem('username');
   const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+  
+  // Update selectedUserRef whenever selectedUser changes
+  useEffect(() => {
+    selectedUserRef.current = selectedUser;
+  }, [selectedUser]);
   
   useEffect(() => {
     // Connect to socket.io server
@@ -55,41 +61,38 @@ function Chat() {
       console.error("❌ WebSocket Authentication Failed");
     });
     
-    // Fetch all users
-    fetchUsers();
-    
-    // Clean up socket connection when component unmounts
-    return () => {
-      if (socket.current) {
-        console.log("Disconnecting socket...");
-        socket.current.disconnect();
-      }
-    };
-  }, []); // Only run this effect once on mount
-  
-  // Separate effect for message events that depends on selectedUser
-  useEffect(() => {
-    if (!socket.current || !socketConnected) return;
-    
-    // Message event handler
-    const handleReceiveMessage = (message) => {
+    // Setup message event handler here, outside the separate useEffect
+    socket.current.on("receive_message", (message) => {
       console.log("Received message:", message);
-      if (message.sender === selectedUser) {
+      
+      // Use the selectedUserRef to access the current selectedUser value
+      if (message.sender === selectedUserRef.current) {
         setMessages((prevMessages) => [...prevMessages, message]);
       } else {
         // Could implement notifications for messages from other users
         console.log(`New message from ${message.sender}`);
       }
-    };
+    });
     
-    // Register event handler
-    socket.current.on("receive_message", handleReceiveMessage);
+    // Setup message sent confirmation handler
+    socket.current.on("message_sent", (sentMessage) => {
+      console.log("Message sent confirmation:", sentMessage);
+      // Optional: Update UI to show message was delivered
+    });
     
-    // Clean up event handler
+    // Fetch all users
+    fetchUsers();
+    
+    // Clean up socket connection and event listeners when component unmounts
     return () => {
-      socket.current.off("receive_message", handleReceiveMessage);
+      if (socket.current) {
+        console.log("Disconnecting socket...");
+        socket.current.off("receive_message");
+        socket.current.off("message_sent");
+        socket.current.disconnect();
+      }
     };
-  }, [selectedUser, socketConnected]);
+  }, []); // Only run this effect once on mount
   
   // Fetch users from the API
   const fetchUsers = async () => {
