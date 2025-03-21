@@ -16,7 +16,7 @@ const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
     origin: 'http://localhost:3000', // Allow only the frontend URL
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'POST', 'OPTIONS'], // Added OPTIONS for preflight
     credentials: true // Allow credentials (cookies, authorization headers)
   }
 });
@@ -25,7 +25,7 @@ const io = socketIo(server, {
 app.use(cors({
   origin: 'http://localhost:3000', // Allow frontend access
   credentials: true, // Allow cookies and authentication headers
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Added OPTIONS for preflight
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -178,6 +178,9 @@ app.get('/api/users', authenticateToken, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+// Handle preflight requests
+app.options('*', cors());
 
 // Socket.io connection
 io.on('connection', (socket) => {
