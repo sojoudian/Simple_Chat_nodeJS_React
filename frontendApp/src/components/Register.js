@@ -8,6 +8,8 @@ function Register({ setIsAuthenticated }) {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // This will use the same host as the React app but with port 5001
+  const API_URL = process.env.REACT_APP_API_URL || `${window.location.protocol}//${window.location.hostname}:5001`;
   
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +23,7 @@ function Register({ setIsAuthenticated }) {
     
     setLoading(true);
     
-    const API_URL = process.env.REACT_APP_API_URL || "http://10.0.0.192:5001";
+  
     try {
       const response = await axios.post(
         `${API_URL}/api/register`,

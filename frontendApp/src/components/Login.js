@@ -9,7 +9,8 @@ function Login({ setIsAuthenticated }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001";
+  // This will use the same host as the React app but with port 5001
+  const API_URL = process.env.REACT_APP_API_URL || `${window.location.protocol}//${window.location.hostname}:5001`;
   
   const handleSubmit = async (e) => {
     e.preventDefault();

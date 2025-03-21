@@ -12,22 +12,24 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-  cors: {
-    origin: ['http://localhost:3000', 'http://10.0.0.192:3000'], // Allow both localhost and your network IP
-    methods: ['GET', 'POST', 'OPTIONS'], // Added OPTIONS for preflight
-    credentials: true // Allow credentials (cookies, authorization headers)
-  }
-});
+
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://10.0.0.192:3000'], // Allow both localhost and your network IP
-  credentials: true, // Allow cookies and authentication headers
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Added OPTIONS for preflight
+  origin: true, // This allows any origin
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Socket.io CORS config
+const io = socketIo(server, {
+  cors: {
+    origin: true, // Allow any origin
+    methods: ['GET', 'POST', 'OPTIONS'],
+    credentials: true
+  }
+});
 
 app.use(express.json());
 
